@@ -1,0 +1,9 @@
+{
+  "max-http-header-size": 200000,
+  "env": {
+      "URL_API_AGE_EMPIRES": "https://age-of-empires-2-api.herokuapp.com",
+      "URL_API_FAKEREST": "https://fakerestapi.azurewebsites.net",
+      "FRONT": "http://automationpractice.com/index.php",
+      "DEVFINANCE": "https://maratona-discover-devfinance.netlify.app/#"
+  }
+}

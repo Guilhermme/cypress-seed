@@ -1,0 +1,12 @@
+{
+  "max-http-header-size": 200000,
+  "env": {
+    "URL_CONSOLE_FRONT": "",
+    "URL_CONSOLE": "",
+    "URL_SSO": "",
+    "URL_REPORT": "",
+    "URL_CADUSER_INTEGRATION": "",
+    "APP_ID_BAAP_CONSOLE": "",
+    "PINNED_MENU_CONSOLE_ID": ""
+  }
+}

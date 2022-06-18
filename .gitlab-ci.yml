@@ -1,0 +1,90 @@
+# ESTAGIOS
+stages:
+  - Lint
+  - Test API
+  - Test frontend
+  
+
+# ESLINT
+Eslint:
+  stage: Lint
+  image: node:12-alpine
+  allow_failure: true
+  script:
+      - rm -rf node_modules package-lock.json
+      - npm install
+      - npm install eslint-plugin-mocha@latest --save-dev
+      - npm run lint
+  only:
+  - branches
+  - master
+  - tags
+  - merge_requests
+
+
+#Test baap-sso-login-qa API
+Test API:
+  stage: Test API
+  allow_failure: true
+  variables:
+      TEST_ENV: CI
+      BASE_URL_FRONT: ""
+  image: node:12-buster-slim
+  artifacts:
+    when: on_failure
+    expire_in: 1 week
+    paths:
+      - cypress/screenshots
+      - cypress/videos
+  before_script:
+      - apt update
+      - apt-get install -y -qq wget libu2f-udev libx11-xcb1 libxcomposite1 libxcursor1 libxdamage1 libxfixes3 libxi6 libxrandr2 libxtst6 xdg-utils libxss1
+      - wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+      - apt install -y -qq ./google-chrome-stable_current_amd64.deb
+      - apt-get install xvfb -y
+      - rm -rf node_modules package-lock.json
+      - npm cache clean --force
+      - export LANG="pt_BR.UTF-8"
+      - npm install
+      - sed -i "s/{{PASSWORD}}/$(echo $PASSWORD)/g" ./cypress.json
+      - sed -i "s/{{PASSWORD_ADMIN}}/$(echo $PASSWORD_ADMIN)/g" ./cypress.json
+  script:
+    - npm run cy:back
+  only:
+  - branches
+  - master
+  - tags
+  # - merge_requests
+
+Test frontend:
+  stage: Test frontend
+  allow_failure: false
+  variables:
+      TEST_ENV: CI
+      BASE_URL_FRONT: ""
+  image: node:12-buster-slim
+  artifacts:
+    when: on_failure
+    expire_in: 1 week
+    paths:
+      - cypress/screenshots
+      - cypress/videos
+  before_script:
+      - apt update
+      - apt-get install -y -qq wget libu2f-udev libx11-xcb1 libxcomposite1 libxcursor1 libxdamage1 libxfixes3 libxi6 libxrandr2 libxtst6 xdg-utils libxss1
+      - wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+      - apt install -y -qq ./google-chrome-stable_current_amd64.deb
+      - apt-get install xvfb -y
+      - rm -rf node_modules package-lock.json
+      - npm cache clean --force
+      - export LANG="pt_BR.UTF-8"
+      - npm install
+      - sed -i "s/{{PASSWORD}}/$(echo $PASSWORD)/g" ./cypress.json
+      - sed -i "s/{{PASSWORD_ADMIN}}/$(echo $PASSWORD_ADMIN)/g" ./cypress.json
+  script:
+    - npm run cy:frontend
+  only:
+  - branches
+  - master
+  - tags
+  # - merge_requests

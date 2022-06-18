@@ -1,0 +1,12 @@
+node_modules
+cypress/videos
+cypress/report
+cypress/screenshots
+.DS_Store
+*.swp
+*.log
+package-lock.json
+*.tgz
+coverage
+.nyc_output
+.clocignore
